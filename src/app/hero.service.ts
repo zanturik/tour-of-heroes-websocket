@@ -3,18 +3,20 @@ import {Observable, of, Subscription} from 'rxjs';
 import { Hero} from './hero';
 import { MessageService} from './message.service';
 import { ServerConnectorService } from './server-connector.service';
+import {FilterService} from './filter.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HeroService {
   heroes: Hero[] = [];
-  private wsSubscription: Subscription;
+
   constructor(
     private messageService: MessageService,
-    private service: ServerConnectorService
+    private service: ServerConnectorService,
+    private filter: FilterService
     ) {
-    this.wsSubscription = this.service.createObservableSocket()
+    this.filter.heroesShared$
       .subscribe(
         data => this.processMessage(data),
         err => console.log('error'),
@@ -76,17 +78,15 @@ export class HeroService {
       return of(result as T);
     };
   }
-    private processMessage(message: string): void {
-      const messageParsed = JSON.parse(message);
-      if (messageParsed.subject === 'heroesList') {
-        this.heroes = messageParsed.content;
+    private processMessage(message: any): void {
+      if (message.subject === 'heroesList') {
+        this.heroes = message.content;
       }
-      if (messageParsed.subject === 'newHero') {
-        this.heroes.push(messageParsed.content);
+      if (message.subject === 'newHero') {
+        this.heroes.push(message.content);
       }
-      if (messageParsed.subject === 'heroDeleted') {
-        this.heroes = this.heroes.filter(hero => hero.id !== messageParsed.content.id);
+      if (message.subject === 'heroDeleted') {
+        this.heroes = this.heroes.filter(hero => hero.id !== message.content.id);
       }
-      console.log('processing ended');
   }
 }
