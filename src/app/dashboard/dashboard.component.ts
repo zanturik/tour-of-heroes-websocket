@@ -11,7 +11,7 @@ import { HeroDetailComponent } from '../hero-detail/hero-detail.component';
 export class DashboardComponent implements OnInit {
   heroes?: Hero[] = [];
   constructor(
-    private heroService: HeroService
+    public heroService: HeroService
   ) { }
 
   ngOnInit(): void {

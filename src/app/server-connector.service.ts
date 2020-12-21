@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable} from 'rxjs';
+import {Observable, timer} from 'rxjs';
 import { environment } from '../environments/environment';
 export const WS_ENDPOINT = environment.wsEndpoint;
 
@@ -15,7 +15,7 @@ export class ServerConnectorService {
   createObservableSocket(): Observable<any> {
     return new Observable(
       observer => {
-        this.ws.onmessage = (event) => {console.log('received from websocket ' + event.data); observer.next(event.data);};
+        this.ws.onmessage = (event) => { observer.next(event.data); };
         this.ws.onerror = (event) => {console.log('error happened websocket'); observer.error(event); };
         this.ws.onclose = (event) => { console.log('closing event: ' + JSON.stringify(event)); observer.complete(); };
         return () => this.ws.close(1000, 'The user disconnected');
