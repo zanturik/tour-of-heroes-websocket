@@ -7,7 +7,7 @@ import {FilterService} from './filter.service';
 export class MessageService {
   messages: string[] = [];
   constructor(private filter: FilterService) {
-    this.filter.heroesShared$
+    this.filter.messagesShared$
       .subscribe(
         data => this.processMessage(data),
         err => console.log('error'),

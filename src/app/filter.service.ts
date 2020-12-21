@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import {MessageService} from './message.service';
-import {ServerConnectorService} from './server-connector.service';
-import {Subject, Subscription} from 'rxjs';
+import { ServerConnectorService } from './server-connector.service';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
