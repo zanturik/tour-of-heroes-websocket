@@ -13,12 +13,11 @@ export class FilterService {
 
   heroesShared$ = this.heroes.asObservable();
 
-  private wsSubscription: Subscription;
   constructor(
     private messageService: MessageService,
     private service: ServerConnectorService
   ) {
-    this.wsSubscription = this.service.createObservableSocket()
+    this.service.createObservableSocket()
       .subscribe(
         data => this.processMessage(data),
         err => console.log('error'),
